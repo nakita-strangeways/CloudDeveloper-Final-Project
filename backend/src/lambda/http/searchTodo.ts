@@ -14,7 +14,6 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
   const userId = getUserId(event)
   const query = event.queryStringParameters.query
 
-
   logger.info(query);
   const items = await searchToDo(query, userId)
   
