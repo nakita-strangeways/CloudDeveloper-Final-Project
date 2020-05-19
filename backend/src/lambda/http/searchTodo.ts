@@ -12,7 +12,7 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
   // i dont think its getting here...
   logger.info('Search Todos', { event });
   const userId = getUserId(event)
-  const query = event.queryStringParameters.query
+  const query = event.queryStringParameters.q
 
 
   logger.info(query);

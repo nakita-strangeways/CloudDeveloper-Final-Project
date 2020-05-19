@@ -26,6 +26,7 @@ provider:
     AUTH_0_SECRET_FIELD: auth0Secret
     IMAGES_S3_BUCKET: todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
+    ES_ENDPOINT: https://search-todo-search-dev-txuqvaa3yld3iah677vos7wcfa.us-east-1.es.amazonaws.com
     
   iamRoleStatements:
     - Effect: Allow
@@ -219,7 +220,12 @@ functions:
         - 'es:*'
       Resource: 
         - '*'
-        
+    - Effect: 'Allow' # xray permissions (required)
+      Action: 
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'        
 
 resources:
   Resources:

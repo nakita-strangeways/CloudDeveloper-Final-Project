@@ -1,13 +1,21 @@
 import * as AWS  from 'aws-sdk'
-import * as AWSXRay from 'aws-xray-sdk'
+// import * as AWSXRay from 'aws-xray-sdk'
+import * as elasticsearch from 'elasticsearch'
+import * as httpAwsEs from 'http-aws-es'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate'
-import { Client } from 'elasticsearch'
+// import { Client } from 'elasticsearch'
 
-const XAWS = AWSXRay.captureAWS(AWS)
+// const XAWS = AWSXRay.captureAWS(AWS)
 const s3 = new AWS.S3({
   signatureVersion: 'v4'
+})
+
+const esHost = process.env.ES_ENDPOINT
+const es = new elasticsearch.Client({
+  hosts: [ esHost ],
+  connectionClass: httpAwsEs
 })
 
 export class TodoAccess {
@@ -17,7 +25,6 @@ export class TodoAccess {
     private readonly todoTable = process.env.TODO_TABLE,
     private readonly todoIndex = process.env.TODO_ID_INDEX,
     private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION,
-    private readonly es = Client
     ) {
   }
 
@@ -129,22 +136,22 @@ export class TodoAccess {
       }
     }
   
-    return await this.es.search({
+    return await es.search({
       index: 'images-index',
       type: 'images',
       body:{
         "query": params
       }
-    }).promise() 
+    })
   }
 }
 
 function createDynamoDBClient() {
   if (process.env.IS_OFFLINE) {
-    return new XAWS.DynamoDB.DocumentClient({
+    return new AWS.DynamoDB.DocumentClient({
       region: 'localhost',
       endpoint: 'http://localhost:8000'
     })
   }
-  return new XAWS.DynamoDB.DocumentClient()
+  return new AWS.DynamoDB.DocumentClient()
 }

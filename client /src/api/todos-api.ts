@@ -74,9 +74,11 @@ export async function uploadFile(uploadUrl: string, file: Buffer): Promise<void>
 
 export async function searchTodos( idToken: string, searchInput: string): Promise<any> {
   console.log('Searching todos')
+  console.log(idToken)
+  console.log(searchInput)
   // gets stuck in the response maybe?
   try {  
-    const response = await Axios.get(`${searchApiEndpoint}/_search?q=${searchInput}`, {
+    const response = await Axios.get(`${apiEndpoint}/_search?q=${searchInput}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${idToken}`
