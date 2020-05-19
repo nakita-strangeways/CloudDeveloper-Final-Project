@@ -4,7 +4,7 @@ My final project for Udacity's Cloud Developer course. This project uses the fou
 
 # Functionality of the application
 
-This application will allow creating/removing/updating/fetching TODO items. Each TODO item can optionally have an attachment image. Each user only has access to TODO items that he/she has created. The user can also search for a particular TODO item. 
+This application will allow creating/removing/updating/fetching TODO items. Each TODO item can optionally have an attachment image. Each user only has access to TODO items that he/she has created. The user can also search for a particular TODO item by name. 
 
 # TODO items
 
@@ -19,7 +19,7 @@ The application should store TODO items, and each TODO item contains the followi
 * `attachmentUrl` (string) (optional) - a URL pointing to an image attached to a TODO item
 
 
-# Functions to be implemented
+# Functions implemented
 
 I've implemented the following functions and configured them in the `serverless.yml` file:
 
@@ -42,7 +42,7 @@ I've also added necessary resources to the `resources` section of the `serverles
 
 The `client` folder contains a web application that can use the API that should be developed in the project.
 
-This frontend should work with your serverless application once it is developed, you don't need to make any changes to the code. The only file that you need to edit is the `config.ts` file in the `client` folder. This file configures your client application just as it was done in the course and contains an API endpoint and Auth0 configuration:
+This frontend should work with your serverless application once it is developed, you don't need to make any changes to the code. The only file that you need to edit is the `config.ts` file in the `client` folder. This file also contains Auth0 configuration so you will need an Auth0 application and copy "domain" and "client id" to the `config.ts` file in the `client` folder. Recommend using asymmetrically encrypted JWT tokens.
 
 ```ts
 const apiId = '...' API Gateway id
@@ -54,10 +54,6 @@ export const authConfig = {
   callbackUrl: 'http://localhost:3000/callback'
 }
 ```
-
-## Authentication
-
-To implement authentication in your application, you would have to create an Auth0 application and copy "domain" and "client id" to the `config.ts` file in the `client` folder. We recommend using asymmetrically encrypted JWT tokens.
 
 # Best practices
 

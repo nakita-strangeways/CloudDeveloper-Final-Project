@@ -205,15 +205,21 @@ functions:
     handler: src/lambda/http/searchTodo.handler
     events:
       - http:
-          method: post
-          path: search/
+          method: get
+          path: /_search
           cors: true
-          authorizer: RS256Auth
+          # authorizer: RS256Auth
           documentation:
             summary: search todo
             description: search todo
             requestModels:
               'application/json': TodoSearchRequest
+    iamRoleStatements:
+    - Effect: Allow
+      # Principal:
+      #   AWS: '*'
+      Action: 'es:*'
+      Resource: '*'
         
 
 resources:

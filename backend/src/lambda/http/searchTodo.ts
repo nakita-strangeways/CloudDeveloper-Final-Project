@@ -1,7 +1,6 @@
 import 'source-map-support/register'
 import { createLogger } from '../../utils/logger'
 import * as middy from 'middy'
-import { cors } from 'middy/middlewares'
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import {searchToDo} from '../../businessLogic/toDos'
 import {getUserId} from '../utils'
@@ -19,14 +18,12 @@ export const handler = middy(async (event: APIGatewayProxyEvent): Promise<APIGat
   
   return {
     statusCode: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    },
     body: JSON.stringify({
       items
     })
   }
 })
-
-handler.use(
-  cors({
-    credentials: true
-  })
-)

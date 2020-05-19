@@ -135,7 +135,7 @@ export class TodoAccess {
       body:{
         "query": params
       }
-    })
+    }).promise() 
   }
 }
 

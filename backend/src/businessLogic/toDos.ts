@@ -53,7 +53,7 @@ export function deleteToDo(todoId: string, userId: string): Promise<string> {
   return toDoAccess.deleteToDo(todoId, userId)
 }
 
-export async function searchToDo(query: string, userId: string): Promise<void> {
+export async function searchToDo(query: string, userId: string): Promise<any> {
   console.log("im in todo")
   return toDoAccess.searchToDo(query, userId)
 }
