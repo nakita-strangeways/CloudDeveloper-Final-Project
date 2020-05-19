@@ -1,4 +1,4 @@
-import { apiEndpoint, searchApiEndpoint } from '../config'
+import { apiEndpoint } from '../config'
 import { Todo } from '../types/Todo';
 import { CreateTodoRequest } from '../types/CreateTodoRequest';
 import Axios from 'axios'
@@ -74,9 +74,6 @@ export async function uploadFile(uploadUrl: string, file: Buffer): Promise<void>
 
 export async function searchTodos( idToken: string, searchInput: string): Promise<any> {
   console.log('Searching todos')
-  console.log(idToken)
-  console.log(searchInput)
-  // gets stuck in the response maybe?
   try {  
     const response = await Axios.get(`${apiEndpoint}/_search?q=${searchInput}`, {
       headers: {
@@ -84,9 +81,8 @@ export async function searchTodos( idToken: string, searchInput: string): Promis
         'Authorization': `Bearer ${idToken}`
       },
     })
-    console.log('Todos:', response)
-    console.log('Todos:', response.data)
-    return response.data.hits
+    console.log('searchResult:', response.data.items.hits.hits)
+    return response.data.items.hits.hits
   } catch {
     alert('Todo search failed')
   }

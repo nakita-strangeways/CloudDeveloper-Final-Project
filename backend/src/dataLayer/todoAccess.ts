@@ -125,22 +125,23 @@ export class TodoAccess {
   }).promise()
   }
 
-  async searchToDo(query:string,userId:String):Promise<any> {
-    console.log("im in todo access")
-    const params = {
-      multi_match: {
-        query: query + " " + userId,
-        type: "cross_fields",
-        fields: ["todoTitle","userid"],
-        operator:   "and"
+  async searchToDo(query:string, userId:String):Promise<any> {
+    console.log("im in todo access", query)
+    console.log(userId)
+    const params = {      
+      "bool": { 
+        "must": [
+          { "match": { "name": query }},
+          { "match": { "userId": userId }}
+        ],
       }
-    }
-  
+    }  
+
     return await es.search({
       index: 'images-index',
-      type: 'images',
+      type: '_doc',
       body:{
-        "query": params
+        "query": params, 
       }
     })
   }

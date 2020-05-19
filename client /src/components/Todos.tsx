@@ -77,7 +77,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       })
       const searchResults = await searchTodos(this.props.auth.getIdToken(), this.state.searchInput
       )
-      console.log("searchResults", searchResults)
+      console.log("searchResults in function", searchResults)
       // this.setState({
       //   todos: this.state.todos.filter(todo => todo.name != todoId)
       // })
