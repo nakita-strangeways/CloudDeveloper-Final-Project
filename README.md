@@ -29,6 +29,8 @@ I've implemented the following functions and configured them in the `serverless.
 * `UpdateTodo` - should update a TODO item created by a current user. 
 * `DeleteTodo` - should delete a TODO item created by a current user. Expects an id of a TODO item to remove.
 * `GenerateUploadUrl` - returns a pre-signed URL that can be used to upload an attachment file for a TODO item.
+* `SyncWithElasticsearch` - syncs with ElasticSearch when a new Todo is added.
+* `searchTodo` - using ElasticSearch, should return todos with matching names.
 
 All functions are already connected to appropriate events from API Gateway.
 An id of a user can be extracted from a JWT token passed by a client.
