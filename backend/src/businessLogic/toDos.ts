@@ -10,6 +10,7 @@ export async function getAllTodoItems(userId: string): Promise<TodoItem[]> {
   if (!userId) {
     return []
   }
+  console.log("I got all the todos")
   return toDoAccess.getAllTodoItems(userId)
 }
 

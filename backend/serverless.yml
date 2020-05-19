@@ -26,7 +26,6 @@ provider:
     AUTH_0_SECRET_FIELD: auth0Secret
     IMAGES_S3_BUCKET: todo-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
-    # ES_ENDPOINT: https://search-todo-search-dev-txuqvaa3yld3iah677vos7wcfa.us-east-1.es.amazonaws.com
     
   iamRoleStatements:
     - Effect: Allow
@@ -85,12 +84,12 @@ functions:
       Action:
         - dynamodb:Query
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}/index/${self:provider.environment.TODO_ID_INDEX}
-    # - Effect: 'Allow' # xray permissions (required)
-    #   Action: 
-    #     - 'xray:PutTraceSegments'
-    #     - 'xray:PutTelemetryRecords'
-    #   Resource:
-    #     - '*'
+    - Effect: 'Allow' # xray permissions (required)
+      Action: 
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
 
   # TODO: Configure this function
   CreateTodo:
@@ -112,12 +111,12 @@ functions:
       Action:
         - dynamodb:PutItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
-    # - Effect: 'Allow' # xray permissions (required)
-    #   Action: 
-    #     - 'xray:PutTraceSegments'
-    #     - 'xray:PutTelemetryRecords'
-    #   Resource:
-    #     - '*'
+    - Effect: 'Allow' # xray permissions (required)
+      Action: 
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
 
   # TODO: Configure this function
   UpdateTodo:
@@ -139,12 +138,12 @@ functions:
       Action:
         - dynamodb:UpdateItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODO_TABLE}
-    # - Effect: 'Allow' # xray permissions (required)
-    #   Action: 
-    #     - 'xray:PutTraceSegments'
-    #     - 'xray:PutTelemetryRecords'
-    #   Resource:
-    #     - '*'
+    - Effect: 'Allow' # xray permissions (required)
+      Action: 
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
 
   # # TODO: Configure this function
   DeleteTodo:
@@ -183,12 +182,12 @@ functions:
       Action:
         - s3:*
       Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
-    # - Effect: 'Allow' # xray permissions (required)
-    #   Action: 
-    #     - 'xray:PutTraceSegments'
-    #     - 'xray:PutTelemetryRecords'
-    #   Resource:
-    #     - '*'
+    - Effect: 'Allow' # xray permissions (required)
+      Action: 
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
 
   SyncWithElasticsearch:
     environment:
@@ -206,9 +205,9 @@ functions:
     events:
       - http:
           method: get
-          path: /_search
+          path: _search
           cors: true
-          # authorizer: RS256Auth
+          authorizer: RS256Auth
           documentation:
             summary: search todo
             description: search todo
@@ -216,10 +215,10 @@ functions:
               'application/json': TodoSearchRequest
     iamRoleStatements:
     - Effect: Allow
-      # Principal:
-      #   AWS: '*'
-      Action: 'es:*'
-      Resource: '*'
+      Action: 
+        - 'es:*'
+      Resource: 
+        - '*'
         
 
 resources:

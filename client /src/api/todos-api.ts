@@ -58,7 +58,7 @@ export async function deleteTodo(
 export async function getUploadUrl(
   idToken: string,
   todoId: string
-): Promise<string> {
+): Promise<any> {
   const response = await Axios.post(`${apiEndpoint}/todos/${todoId}/attachment`, '', {
     headers: {
       'Content-Type': 'application/json',
@@ -72,16 +72,20 @@ export async function uploadFile(uploadUrl: string, file: Buffer): Promise<void>
   await Axios.put(uploadUrl, file)
 }
 
-export async function searchTodos( idToken: string, searchInput: string): Promise<string> {
+export async function searchTodos( idToken: string, searchInput: string): Promise<any> {
   console.log('Searching todos')
   // gets stuck in the response maybe?
-  const response = await Axios.get(`${searchApiEndpoint}/_search?q=${searchInput}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${idToken}`
-    },
-  })
-  console.log('Todos:', response)
-  console.log('Todos:', response.data)
-  return response.data.items
+  try {  
+    const response = await Axios.get(`${searchApiEndpoint}/_search?q=${searchInput}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`
+      },
+    })
+    console.log('Todos:', response)
+    console.log('Todos:', response.data)
+    return response.data.hits
+  } catch {
+    alert('Todo search failed')
+  }
 }
