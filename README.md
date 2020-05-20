@@ -1,6 +1,6 @@
 # Serverless TODO
 
-My final project for Udacity's Cloud Developer course. This project uses the foundations of Course 5: Develop & Deploy Serverless App and adds testing, as well as a search option to the Todo App.  
+My final project for Udacity's Cloud Developer course. This project uses the foundations of Course 5: Develop & Deploy Serverless App, and adds a search option to search through todos using ElasticSearch.  
 
 # Functionality of the application
 
