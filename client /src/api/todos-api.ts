@@ -81,8 +81,16 @@ export async function searchTodos( idToken: string, searchInput: string): Promis
         'Authorization': `Bearer ${idToken}`
       },
     })
-    console.log('searchResult:', response.data.items.hits.hits)
-    return response.data.items.hits.hits
+    let searchResults:any = []
+    response.data.items.hits.hits.forEach(
+      (hit:any, index:any) => {
+        console.log(index)
+        console.log(hit._source)
+        searchResults.push(hit._source)
+      }
+    )
+    console.log(searchResults)  
+    return searchResults
   } catch {
     alert('Todo search failed')
   }

@@ -30,6 +30,7 @@ interface TodosState {
   newTodoName: string
   loadingTodos: boolean
   searchInput: string
+  isSearching: boolean
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
@@ -38,6 +39,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     todos: [],
     newTodoName: '',
     loadingTodos: true,
+    isSearching: false,
     searchInput: '',
   }
 
@@ -71,16 +73,15 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
 
   onTodoSearch = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
-      console.log("attempted to search")
       this.setState({
         originalTodos: this.state.todos,
       })
       const searchResults = await searchTodos(this.props.auth.getIdToken(), this.state.searchInput
       )
-      console.log("searchResults in function", searchResults)
-      // this.setState({
-      //   todos: this.state.todos.filter(todo => todo.name != todoId)
-      // })
+      this.setState({
+        todos: searchResults,
+        isSearching: true
+      })
     } catch {
       alert('Todo search failed')
     }
@@ -95,6 +96,15 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     } catch {
       alert('Todo deletion failed')
     }
+  }
+
+  clearSearch = () => {
+    this.setState({
+      todos: this.state.originalTodos,
+      isSearching: false,
+      originalTodos: [],
+      searchInput: ''
+    })
   }
 
   onTodoCheck = async (pos: number) => {
@@ -133,10 +143,22 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         <Header as="h1">TODOs</Header>
 
         {this.renderCreateTodoInputAndSearch()}
-
+        {this.renderClearSearchButton()}
         {this.renderTodos()}
       </div>
     )
+  }
+
+  renderClearSearchButton(){
+    if (this.state.isSearching) {
+      return (
+        <Grid centered>
+          <Grid.Row>
+            <Button compact fluid content='Clear Search' onClick={this.clearSearch} />
+          </Grid.Row>
+        </Grid>
+      )
+    }
   }
 
   renderCreateTodoInputAndSearch() {
