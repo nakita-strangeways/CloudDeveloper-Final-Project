@@ -31,6 +31,7 @@ interface TodosState {
   loadingTodos: boolean
   searchInput: string
   isSearching: boolean
+  noResults: boolean
 }
 
 export class Todos extends React.PureComponent<TodosProps, TodosState> {
@@ -41,6 +42,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     loadingTodos: true,
     isSearching: false,
     searchInput: '',
+    noResults: false
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +80,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
       })
       const searchResults = await searchTodos(this.props.auth.getIdToken(), this.state.searchInput
       )
+      if (searchResults.length === 0) {
+        this.setState({ noResults: true })
+      }
       this.setState({
         todos: searchResults,
         isSearching: true
@@ -102,6 +107,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     this.setState({
       todos: this.state.originalTodos,
       isSearching: false,
+      noResults: false,
       originalTodos: [],
       searchInput: ''
     })
@@ -141,9 +147,9 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
     return (
       <div>
         <Header as="h1">TODOs</Header>
-
         {this.renderCreateTodoInputAndSearch()}
         {this.renderClearSearchButton()}
+        {this.renderNoResultsBanner()}
         {this.renderTodos()}
       </div>
     )
@@ -155,6 +161,18 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         <Grid centered>
           <Grid.Row>
             <Button compact fluid content='Clear Search' onClick={this.clearSearch} />
+          </Grid.Row>
+        </Grid>
+      )
+    }
+  }
+
+  renderNoResultsBanner(){
+    if (this.state.noResults) {
+      return (
+        <Grid centered>
+          <Grid.Row>
+            <Segment>Oh dear, no Results. Clear the search and try again or make a new todo!</Segment>
           </Grid.Row>
         </Grid>
       )

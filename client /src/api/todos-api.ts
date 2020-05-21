@@ -73,7 +73,6 @@ export async function uploadFile(uploadUrl: string, file: Buffer): Promise<void>
 }
 
 export async function searchTodos( idToken: string, searchInput: string): Promise<any> {
-  console.log('Searching todos')
   try {  
     const response = await Axios.get(`${apiEndpoint}/_search?q=${searchInput}`, {
       headers: {
@@ -82,14 +81,14 @@ export async function searchTodos( idToken: string, searchInput: string): Promis
       },
     })
     let searchResults:any = []
-    response.data.items.hits.hits.forEach(
-      (hit:any, index:any) => {
-        console.log(index)
-        console.log(hit._source)
-        searchResults.push(hit._source)
-      }
-    )
-    console.log(searchResults)  
+    if (response) {
+      response.data.items.hits.hits.forEach(
+        (hit:any, index:any) => {
+          searchResults.push(hit._source)
+        }
+      )
+      console.log(searchResults)  
+    }
     return searchResults
   } catch {
     alert('Todo search failed')

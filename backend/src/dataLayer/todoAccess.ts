@@ -126,8 +126,6 @@ export class TodoAccess {
   }
 
   async searchToDo(query:string, userId:String):Promise<any> {
-    console.log("im in todo access", query)
-    console.log(userId)
     const params = {      
       "bool": { 
         "must": [

@@ -55,6 +55,5 @@ export function deleteToDo(todoId: string, userId: string): Promise<string> {
 }
 
 export async function searchToDo(query: string, userId: string): Promise<any> {
-  console.log("im in todo", query)
   return toDoAccess.searchToDo(query, userId)
 }
